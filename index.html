@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>OffscreenCanvas 离屏绘制 vs 主线程绘制对比</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Canvas 离屏绘制对比实验</h1>
+    <p>粒子 + 实时图表 + 地图网格 · OffscreenCanvas + Web Worker + PerformanceObserver + IndexedDB</p>
+  </header>
+
+  <div id="banner" class="banner"></div>
+
+  <main>
+    <section class="controls">
+      <div class="control-group">
+        <span class="label">渲染模式</span>
+        <button id="mode-main" type="button">主线程绘制</button>
+        <button id="mode-worker" type="button">离屏绘制（Worker）</button>
+      </div>
+      <div class="control-group">
+        <span class="label">粒子数量 <b id="particles-label">3000</b></span>
+        <input id="particles" type="range" min="500" max="12000" step="500" value="3000" />
+      </div>
+      <div class="control-group">
+        <button id="block-btn" type="button">阻塞主线程 2s</button>
+        <button id="ctxloss-btn" type="button">模拟上下文丢失</button>
+        <button id="clear-data-btn" type="button">清空历史数据</button>
+      </div>
+    </section>
+
+    <section class="stats">
+      <div class="stat"><span>当前模式</span><b id="stat-mode">-</b></div>
+      <div class="stat"><span>帧率</span><b id="stat-fps">-</b></div>
+      <div class="stat"><span>平均帧耗时</span><b id="stat-frametime">-</b></div>
+      <div class="stat"><span>长任务次数</span><b id="stat-longtasks">0</b></div>
+      <div class="stat"><span>输入延迟</span><b id="stat-latency">-</b></div>
+    </section>
+
+    <section id="stage" class="stage"></section>
+
+    <section class="panels">
+      <div class="panel">
+        <h2>历史帧率对比（IndexedDB）</h2>
+        <div id="summary" class="summary">加载中…</div>
+      </div>
+      <div class="panel">
+        <h2>运行日志</h2>
+        <div id="log" class="log"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>提示：请通过 http(s) 访问（如 <code>python3 -m http.server</code>），file:// 协议下 Worker 无法加载（可用于验证降级提示）。</p>
+  </footer>
+
+  <script src="scene.js"></script>
+  <script src="db.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
