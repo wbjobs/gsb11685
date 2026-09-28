@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>离屏渲染 vs 主线程渲染对比</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header>
+    <h1>Canvas 离屏渲染对比实验</h1>
+    <p>粒子 + 图表 + 热力地图 · Canvas / OffscreenCanvas / Web Worker / PerformanceObserver / IndexedDB</p>
+  </header>
+
+  <div id="banner" class="banner"></div>
+
+  <main>
+    <aside>
+      <section class="panel">
+        <h2>渲染模式</h2>
+        <label><input type="radio" name="mode" id="modeWorker" value="worker"> 离屏绘制（Worker）</label>
+        <label><input type="radio" name="mode" id="modeMain" value="main"> 主线程绘制</label>
+      </section>
+
+      <section class="panel">
+        <h2>场景参数</h2>
+        <label>粒子数：<span id="particlesVal">2500</span></label>
+        <input type="range" id="particles" min="200" max="8000" step="100" value="2500">
+      </section>
+
+      <section class="panel">
+        <h2>故障注入</h2>
+        <button id="blockMain">阻塞主线程 300ms</button>
+        <button id="simulateCtxLoss">模拟上下文丢失</button>
+        <label><input type="checkbox" id="simulateWorkerFail"> 模拟 Worker 创建失败</label>
+      </section>
+
+      <section class="panel">
+        <h2>实时指标</h2>
+        <dl>
+          <dt>渲染模式</dt><dd id="statMode">-</dd>
+          <dt>渲染帧率</dt><dd id="statRenderFps">-</dd>
+          <dt>主线程帧率</dt><dd id="statMainFps">-</dd>
+          <dt>单帧耗时</dt><dd id="statFrameMs">-</dd>
+          <dt>长任务(每秒)</dt><dd id="statLongtask">-</dd>
+          <dt>指令同步</dt><dd id="statSync">-</dd>
+        </dl>
+      </section>
+
+      <section class="panel">
+        <h2>历史对照（IndexedDB）</h2>
+        <button id="history">统计历史均值</button>
+        <button id="clearHistory">清除历史</button>
+      </section>
+    </aside>
+
+    <div id="stage"></div>
+  </main>
+
+  <section class="panel log-panel">
+    <h2>运行日志</h2>
+    <div id="log"></div>
+  </section>
+
+  <script src="js/scene.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
